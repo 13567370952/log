@@ -191,11 +191,16 @@ pip install --trusted-host pypi.org pymssql
 
 ## 21-07-16
 ###  查询更换电池已完成，报修单据还未完成
-SELECT 
+SELECT  
+
 t.id,t.sid,t.new_bid,s.bid,s.bid_check,s.state,sp.state,sp.time
+
 FROM ng_send_new_battery_task t
+
 LEFT JOIN ng_service s ON s.id =t.sid
+
 LEFT JOIN ng_service_process sp ON sp.service_id=s.id
 
 WHERE t.state = 3  AND s.state <>12
+
 ORDER BY sid,time
