@@ -170,26 +170,32 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas
 
 
 
-## 21-07-28
+## 21-07-08
 ### pyinstaller
 使用pyinstaller程序打包，import pymssql 的程序时，有如下提示ModuleNotFoundError: No module named 'pymssql._mssql'
 尝试了网上的方法 import _mssql 或者 import pymssql._mssql 等都没解决，最终尝试如下方法解决：
 import pymssql后，添加这几行即可
-````
+```python
 from pymssql import _mssql
 from pymssql import _pymssql
 import uuid
 import decimal
 ```
-
-如果不行的话，升级pip、pyinstaller等之后，再pyinstaller -F xxx.py
-
-更新pip
-
-python -m pip install --upgrade pip --trusted-host pypi.org
+如果不行的话，升级pip、pyinstaller等之后，再pyinstaller -F xxx.py ,更新pip: python -m pip install --upgrade pip --trusted-host pypi.org
 
 pymssql安装
 
 pip install --trusted-host pypi.org pymssql
 
 新版本的python集成环境 不需要--trusted-host pypi.org也可
+
+## 21-07-16
+###  查询更换电池已完成，报修单据还未完成
+SELECT 
+t.id,t.sid,t.new_bid,s.bid,s.bid_check,s.state,sp.state,sp.time
+FROM ng_send_new_battery_task t
+LEFT JOIN ng_service s ON s.id =t.sid
+LEFT JOIN ng_service_process sp ON sp.service_id=s.id
+
+WHERE t.state = 3  AND s.state <>12
+ORDER BY sid,time
