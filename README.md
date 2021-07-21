@@ -1,5 +1,168 @@
 # Some Log
+## 21-06-01
+### mysql创建触发器
+-- ----------------------------
 
+-- 创建insert触发器(当用户上报报修后就形成报表记录)
+
+-- ----------------------------
+
+CREATE TRIGGER ng_service_insert AFTER INSERT ON ng_service FOR EACH ROW 
+
+BEGIN
+
+IF(NEW.type<>0 && NEW.state<>14) THEN
+
+SET @report_insert_name = (SELECT name FROM ng_app_user WHERE id = NEW.create_user);
+
+SET @report_insert_phone = (SELECT phone FROM ng_app_user WHERE id = NEW.create_user);
+
+SET @report_insert_customer = (SELECT customer FROM ng_battery WHERE bid = NEW.bid);
+
+SET @report_insert_area_one = (SELECT area_one FROM view_battery_china WHERE bid = NEW.bid);
+
+SET @report_insert_idea = (SELECT idea FROM ng_service_deal_idea WHERE id = NEW.idea);
+
+SET @report_insert_type = (SELECT type FROM ng_battery WHERE bid = NEW.bid);
+
+SET @report_insert_time = (SELECT time FROM ng_battery WHERE bid = NEW.bid);
+
+SET @report_insert_app_value = (SELECT app_value FROM ng_service_state WHERE id = NEW.state);
+
+SET @report_insert_number =   (SELECT number FROM ng_service_cdj_building WHERE service_id = NEW.id);
+
+SET @report_insert_deal_time = (SELECT create_time FROM ng_exception_analysis_result WHERE service_id = NEW.id ORDER BY create_time LIMIT 1);
+
+-- SET @report_remark = (SELECT remark FROM ng_exception_analysis_result WHERE service_id = NEW.id  ORDER BY remark LIMIT 1);
+
+ SET @report_insert_remark = (SELECT  GROUP_CONCAT(remark) FROM ng_exception_analysis_result WHERE service_id IN (SELECT id FROM ng_exception_analysis_result WHERE service_id = NEW.id ));
+ 
+-- SET @report_temp_exception_id =  (SELECT b FROM ng_exception_analysis_result WHERE service_id = NEW.id ORDER BY b LIMIT 1);
+
+-- SET @report_info = (SELECT info FROM ng_exception WHERE id = @report_temp_exception_id);
+
+SET @report_insert_info =  (SELECT GROUP_CONCAT(info) FROM ng_exception WHERE id IN (SELECT b FROM ng_exception_analysis_result WHERE service_id = NEW.id GROUP BY b));
+
+SET @report_insert_finish_time = (SELECT time FROM ng_service_process WHERE state=12 AND service_id=NEW.id ORDER BY time DESC LIMIT 1);
+
+SET @report_insert_new_bid = (SELECT new_bid FROM ng_send_new_battery_task WHERE state<>-1 AND sid=NEW.id ORDER BY id DESC LIMIT 1);
+
+SET @report_insert_wlnumber = (SELECT number FROM view_battery_china WHERE bid = NEW.id);
+
+SET @report_insert_cdjtype = (SELECT info FROM ng_more_info_description WHERE id = NEW.id);
+
+INSERT INTO ng_report (id,bid,name,phone,create_time,address,customer,area_one,idea,type,time,app_value,number,deal_time,remark,info,finish_time,new_bid,wlnumber,cdjtype)
+
+VALUES(NEW.id,NEW.bid,@report_insert_name,@report_insert_phone,NEW.create_time,NEW.address,@report_insert_customer,@report_insert_area_one,@report_insert_idea,@report_insert_type,@report_insert_time,
+@report_insert_app_value,@report_insert_number,@report_insert_deal_time,@report_insert_remark,@report_insert_info,@report_insert_finish_time,@report_insert_new_bid,@report_insert_wlnumber,@report_insert_cdjtype);
+
+END IF;
+
+END
+
+-- ----------------------------
+
+-- 创建update触发器(报表信息随报修记录动态变动)
+
+-- ----------------------------
+
+CREATE TRIGGER ng_service_update AFTER UPDATE ON ng_service FOR EACH ROW 
+
+BEGIN
+
+IF(NEW.type<>0 && NEW.state<>14) THEN
+
+--    IF(NEW.state=12) THEN
+
+--    SLEEP(1)
+
+--    END IF;
+
+SET @report_update_name = (SELECT name FROM ng_app_user WHERE id = NEW.create_user);
+
+SET @report_update_phone = (SELECT phone FROM ng_app_user WHERE id = NEW.create_user);
+
+SET @report_update_customer = (SELECT customer FROM ng_battery WHERE bid = NEW.bid);
+
+SET @report_update_area_one = (SELECT area_one FROM view_battery_china WHERE bid = NEW.bid);
+
+SET @report_update_idea = (SELECT idea FROM ng_service_deal_idea WHERE id = NEW.idea);
+
+SET @report_update_type = (SELECT type FROM ng_battery WHERE bid = NEW.bid);
+
+SET @report_update_time = (SELECT time FROM ng_battery WHERE bid = NEW.bid);
+
+SET @report_update_app_value = (SELECT app_value FROM ng_service_state WHERE id = NEW.state);
+
+SET @report_update_number =   (SELECT number FROM ng_service_cdj_building WHERE service_id = NEW.id);
+
+SET @report_update_deal_time = (SELECT create_time FROM ng_exception_analysis_result WHERE service_id = NEW.id ORDER BY create_time LIMIT 1);
+
+-- SET @report_remark = (SELECT remark FROM ng_exception_analysis_result WHERE service_id = NEW.id  ORDER BY remark LIMIT 1);
+
+ SET @report_update_remark = (SELECT  GROUP_CONCAT(remark) FROM ng_exception_analysis_result WHERE service_id IN (SELECT id FROM ng_exception_analysis_result WHERE service_id = NEW.id ));
+ 
+-- SET @report_temp_exception_id =  (SELECT b FROM ng_exception_analysis_result WHERE service_id = NEW.id ORDER BY b LIMIT 1);
+
+-- SET @report_info = (SELECT info FROM ng_exception WHERE id = @report_temp_exception_id);
+
+SET @report_update_info =  (SELECT GROUP_CONCAT(info) FROM ng_exception WHERE id IN (SELECT b FROM ng_exception_analysis_result WHERE service_id = NEW.id GROUP BY b));
+
+SET @report_update_finish_time = (SELECT time FROM ng_service_process WHERE state=12 AND service_id=NEW.id ORDER BY time DESC LIMIT 1);
+
+SET @report_update_new_bid = (SELECT new_bid FROM ng_send_new_battery_task WHERE state<>-1 AND sid=NEW.id ORDER BY id DESC LIMIT 1);
+
+SET @report_update_wlnumber = (SELECT number FROM view_battery_china WHERE bid = NEW.id);
+
+SET @report_update_cdjtype = (SELECT info FROM ng_more_info_description WHERE id = NEW.id);
+
+UPDATE ng_report
+
+SET 
+
+bid = NEW.bid,
+
+name = @report_update_name,
+
+phone = @report_update_phone,
+
+address = NEW.address,
+
+customer = @report_update_customer,
+
+area_one = @report_update_area_one,
+
+idea = @report_update_idea,
+
+type =  @report_update_type,
+
+time = @report_update_time,
+
+app_value =@report_update_app_value,
+
+number = @report_update_number,
+
+deal_time = @report_update_deal_time,
+
+remark = @report_update_remark,
+
+info = @report_update_info,
+
+finish_time = @report_update_finish_time,
+
+new_bid = @report_update_new_bid,
+
+wlnumber = @report_update_wlnumber,
+
+cdjtype = @report_update_cdjtype
+
+WHERE id = NEW.id;
+
+END IF;
+
+END
+
+--------------------------------------------------------------------------------------------------------------------------
 ## 21-06-04  
 ### mysql数据库创建root用户
 -- CREATE USER 'yangshen'@'%' IDENTIFIED BY '123456';  
