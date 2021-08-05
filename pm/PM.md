@@ -25,7 +25,7 @@
 ![项目沟通管理](https://imgconvert.csdnimg.cn/aHR0cHM6Ly81YjA5ODhlNTk1MjI1LmNkbi5zb2h1Y3MuY29tL2ltYWdlcy8yMDE3MDkyNi82YzU5ODJkZWUxYmI0ODVhYTc4NjQ0OThlMGM3NDRhZS5wbmc?x-oss-process=image/format,png)
 
 ### 8、项目风险管理
-![项目风险管理]https://imgconvert.csdnimg.cn/aHR0cHM6Ly81YjA5ODhlNTk1MjI1LmNkbi5zb2h1Y3MuY29tL2ltYWdlcy8yMDE3MDkyNi9iMzhjYzBjYjdlYmE0YjgxYTEyNDM0NjJhM2YyMDg0OC5wbmc?x-oss-process=image/format,png)
+![项目风险管理](https://imgconvert.csdnimg.cn/aHR0cHM6Ly81YjA5ODhlNTk1MjI1LmNkbi5zb2h1Y3MuY29tL2ltYWdlcy8yMDE3MDkyNi9iMzhjYzBjYjdlYmE0YjgxYTEyNDM0NjJhM2YyMDg0OC5wbmc?x-oss-process=image/format,png)
 
 ### 9、项目采购管理
 ![项目采购管理](https://imgconvert.csdnimg.cn/aHR0cHM6Ly81YjA5ODhlNTk1MjI1LmNkbi5zb2h1Y3MuY29tL2ltYWdlcy8yMDE3MDkyNi9iYzA0Yzc5YjIzYjY0OWNlYjNlMTQ3NjI3OTQzM2ZjNC5wbmc?x-oss-process=image/format,png)
