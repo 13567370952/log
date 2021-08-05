@@ -3,5 +3,5 @@
 ## 十大知识领域
 ![aaa](pm/1.png)
 ![bbb](/pm/1.png)
-![ccc](../pm/1.png)
+![ccc](../log/pm/1.png)
 ![ddd](./pm/1.png)
