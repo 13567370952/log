@@ -367,3 +367,23 @@ LEFT JOIN ng_service_process sp ON sp.service_id=s.id
 WHERE t.state = 3  AND s.state <>12
 
 ORDER BY sid,time
+
+## 21-10-08
+### 翻译测试
+```python
+import requests
+
+while True:
+    string = input("请输入一段要翻译的文字")
+    data = {'doctype': 'json', 'type': 'AUTO', 'i': string}
+    url = 'http://fanyi.youdao.com/translate'
+    r = requests.get(url, params=data)
+    result = r.json()
+    print('result=', result)
+    print(result['translateResult'][0][0]['tgt'])
+
+## 请输入一段要翻译的文字我爱你
+## result= {'type': 'ZH_CN2EN', 'errorCode': 0, 'elapsedTime': 0, 'translateResult': [[{'src': '我爱你', 'tgt': 'I love you'}]]}
+## I love you
+
+```
