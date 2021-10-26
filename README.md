@@ -400,6 +400,7 @@ pip install pdfkit
 ```python
 pip install pdfkit
 ```
+```python
 # yshen
 # 2021/10/26 8:58
 import pdfkit
@@ -412,3 +413,4 @@ html = '<html><head><meta charset="UTF-8"></head>' \
 
 # 转换为PDF
 pdfkit.from_string(html, 'test.pdf')
+```
