@@ -387,3 +387,28 @@ while True:
 ## I love you
 
 ```
+
+## 21-10-26
+### python生成pdf
+安装wkhtmltopdf
+https://github.com/JazzCore/python-pdfkit/wiki/Installing-wkhtmltopdf
+安装pdfkit
+```python
+pip install pdfkit
+```
+代码
+```python
+pip install pdfkit
+```
+# yshen
+# 2021/10/26 8:58
+import pdfkit
+
+# PDF中包含的文字
+content = '这是一个测试页面。' + '<br>' + 'Hello World! 你好，世界!'
+
+html = '<html><head><meta charset="UTF-8"></head>' \
+       '<body><div align="center"><p>%s</p></div></body></html>' % content
+
+# 转换为PDF
+pdfkit.from_string(html, 'test.pdf')
