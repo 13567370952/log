@@ -49,3 +49,21 @@ function tail($fp, $n, $base = 5){
 
 var_dump(tail(fopen("D:\\txt\\2.txt", "r+"), 10));
 ```
+
+## 21-11-26
+### 发送邮件问题
+```php
+// 解决filter_var(): explicit use of FILTER_FLAG_SCHEME_REQUIRED is deprecate问题
+// 场景：邮箱发送验证码类在php7.3.21 环境中报错：
+// 原因：php7.3+弃用了FILTER_FLAG_SCHEME_REQUIRED函数
+// 解决方式： PHPMailer.php 3599行 修改url地址的正则验证
+    if (filter_var('http://' . $host, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) {
+            //Is it a syntactically valid hostname?
+            return true;
+}
+修改为
+    if (preg_match('/http:\/\/[\w.]+[\w\/]*[\w.]*\??[\w=&\+\%]*/is','http://' . $host)) {
+            //Is it a syntactically valid hostname?
+            return true;
+}
+```
